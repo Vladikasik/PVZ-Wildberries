@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import json
+from tkinter import messagebox
 
 
 class Wildberries_App:
@@ -20,11 +21,13 @@ class Wildberries_App:
 
         self.frame_2nd = Frame(self.root)
 
+        self.choose_list = []
+
     def set_up_1(self):
 
         self.frame_1ts = Frame(self.root)
 
-        self.order_number = Text(self.frame_1ts, height=1, width=50)
+        self.order_number = Entry(self.frame_1ts)
 
         self.order_number.grid(row=0, column=0)
 
@@ -36,7 +39,7 @@ class Wildberries_App:
 
     def get_order(self):
 
-        self.order_number_from_field = self.order_number.get('1.0', END)
+        self.order_number_from_field = self.order_number.get()
 
         try:
             file = open(r'..\files\orders.json', encoding='utf-8')
@@ -100,6 +103,11 @@ class Wildberries_App:
         text_lb = 'Информация'
         Label(self.frame_2nd, text=text_lb, font='Calibri 13').grid(row=2, column=3, columnspan=2, padx=1, pady=0.5)
 
+        for i in range(len(self.order)):
+            self.choose_list.append(False)
+
+        print(self.choose_list)
+
         j = 0
         for i in self.order['Вещи']:
             Checkbutton(self.frame_2nd, text=str(i)).grid(row=3 + j, column=0, padx=0.5, pady=0.5)
@@ -145,18 +153,33 @@ class Wildberries_App:
 
         window = Toplevel()
 
-        password = Text(window, show='*')
+        window.title('Пароль')
+        window.geometry('200x77')
+
+        text_pas = Label(window, text='Введит пароль работника')
+
+        password = Entry(window, show='*')
 
         def confirm():
-            result = password.get('1.0', END)
-            print(result)
+            result = password.get()
+            with open(r'..\files\private\password_rabotnika') as file:
+                correct = file.read()
+            if result == correct:
+                self.set_up_3()
+                window.destroy()
+            else:
+                messagebox.showerror('Ошибка', 'Неправильный пароль')
+                window.lift()
 
-        bttn = Button(window,text='Подтвердить',command=confirm)
+        bttn = Button(window, text='Подтвердить', command=confirm)
 
+        text_pas.pack()
         password.pack()
         bttn.pack()
 
+    def set_up_3(self):
 
+        pass
 
     def replace(self, field1, field2):
         field1.destroy()

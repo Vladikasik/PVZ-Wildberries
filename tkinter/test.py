@@ -1,16 +1,31 @@
-import tkinter
-import ttkSimpleDialog
+from tkinter import *
+from tkinter import ttk
 
 
-def dialog(event):
-    result = ttkSimpleDialog(title='Заголовок окна', prompt='Текст вопроса')
-    print(result)
+def show_hide_psd():
+    if(check_var.get()):
+        entry_psw.config(show="")
+    else:
+        entry_psw.config(show="*")
+
+    print(entry_psw.get())
 
 
-root =tkinter.Tk()
-root.title("Основное окно приложения")
-root.geometry('-450-250')
-but = tkinter.Button(root, text='Открыть диалог')
-but.grid(row=0, column=0)
-but.bind("<ButtonRelease-1>", dialog)
-tkinter.mainloop()
+window = Tk()
+window.wm_title("Password")
+
+window.geometry("300x100+30+30")
+window.resizable(0,0)
+
+entry_psw = Entry(window, width=30, show="*", bd=3)
+entry_psw.place(x = 5, y = 25)
+
+
+
+check_var = IntVar()
+check_show_psw = Checkbutton(window, text = "Show", variable = check_var, \
+                 onvalue = 1, offvalue = 0, height=2, \
+                 width = 5, command = show_hide_psd)
+check_show_psw.place(x = 5, y = 50)
+
+window.mainloop()
