@@ -20,6 +20,8 @@ class Wildberries_App:
         self.order_number_from_field = ''
         self.order = {}
 
+        self.frame_1ts = Frame(self.root)
+
         self.frame_2nd = Frame(self.root)
 
         self.frame_3rd = Frame(self.root)
@@ -59,7 +61,7 @@ class Wildberries_App:
                 if order['Order_num'] == int(self.order_number_from_field):
                     self.order = order
         except ValueError:
-                messagebox.showerror('Ошибка', 'Неправильный код заказа')
+            messagebox.showerror('Ошибка', 'Неправильный код заказа')
 
         ###each clothes
         self.order_clothes = []
@@ -93,6 +95,10 @@ class Wildberries_App:
         self.set_up_2()
         self.frame_2nd.pack()
 
+    def init_choose_list(self):
+        for i in self.order['Вещи']:
+            self.choose_list[i] = BooleanVar()
+
     def set_up_2(self):
 
         text_lb = 'Заказ ' + str(self.order['Order_num'])
@@ -111,13 +117,12 @@ class Wildberries_App:
 
         print(self.choose_list)
 
-        for i in self.order['Вещи']:
-            self.choose_list[i] = BooleanVar()
+        self.init_choose_list()
 
         j = 0
         for i in self.order['Вещи']:
-
-            Checkbutton(self.frame_2nd, text=str(i), variable=self.choose_list[i], onvalue=True, offvalue=False).grid(row=3 + j, column=0, padx=0.5, pady=0.5)
+            Checkbutton(self.frame_2nd, text=str(i), variable=self.choose_list[i], onvalue=True, offvalue=False).grid(
+                row=3 + j, column=0, padx=0.5, pady=0.5)
             j += 1
 
         j = 0
@@ -145,15 +150,13 @@ class Wildberries_App:
 
         print(self.order_clothes)
 
-        bttn_give = Button(self.frame_2nd,text='Осуществить возврат',font='Calibri 13',command=self.button_give)
-        bttn_get = Button(self.frame_2nd,text='Выдать заказ',font='Calibri 13',command=self.button_get)
+        bttn_give = Button(self.frame_2nd, text='Осуществить возврат', font='Calibri 13', command=self.button_give)
+        bttn_get = Button(self.frame_2nd, text='Выдать заказ', font='Calibri 13', command=self.button_get)
 
-        bttn_give.grid(row=j+4,column=1,pady=50)
-        bttn_get.grid(row=j+4,column=4,pady=50)
+        bttn_give.grid(row=j + 4, column=1, pady=50)
+        bttn_get.grid(row=j + 4, column=4, pady=50)
 
     def check_chosen(self):
-        print('chooselist')
-        print(self.choose_list)
         is_true = False
         for item, variable in self.choose_list.items():
             if variable.get():
@@ -166,15 +169,13 @@ class Wildberries_App:
             return False
 
     def button_give(self):
-        while True:
-            if self.check_chosen():
-                break
-        self.check_available('return')
+        if self.check_chosen():
+            self.check_available('return')
 
     def button_get(self):
         self.check_available('submission')
 
-    def check_available(self,state_func):
+    def check_available(self, state_func):
 
         window = Toplevel()
 
@@ -184,7 +185,6 @@ class Wildberries_App:
         text_pas = Label(window, text='Введит пароль работника')
 
         password = Entry(window, show='*')
-
 
         def confirm():
             result = password.get()
@@ -203,12 +203,14 @@ class Wildberries_App:
         password.pack()
         bttn.pack()
 
-        def go_next(state):
+        def go_next(state_1):
             self.frame_2nd.destroy()
-            self.set_up_3(state)
+            self.set_up_3(state_1)
             self.frame_3rd.pack()
 
     def set_up_3(self, state):
+
+        self.frame_3rd = Frame(self.root)
 
         text_lb = 'Заказ ' + str(self.order['Order_num'])
         Label(self.frame_3rd, text=text_lb, font='Calibri 14 bold').grid(row=0, column=2, columnspan=2, padx=1,
@@ -225,9 +227,32 @@ class Wildberries_App:
 
         Label(self.frame_3rd, text=text_lb, font='Calibri 13').grid(row=2, column=0, columnspan=2, padx=1, pady=0.5)
 
-    def replace(self, field1, field2):
-        field1.destroy()
-        field2.pack()
+        print(self.choose_list)
+
+        j = 2
+        for item, state_item in self.choose_list.items():
+            if state_item.get():
+                Label(self.frame_3rd, text=item).grid(row=j, column=2, columnspan=2, padx=0.5, pady=0.5)
+                Label(self.frame_3rd, text=self.data_clothes[item]).grid(row=j, column=4, columnspan=2, padx=0.5,
+                                                                         pady=0.5)
+                j += 1
+
+        def return_to_main():
+            self.frame_3rd.destroy()
+            self.init_choose_list()
+            self.frame_2nd = Frame(self.root)
+            self.set_up_2()
+            self.frame_2nd.pack()
+
+        def accept():
+            pass
+
+        Label(self.frame_3rd, text='', font='Calibri 13').grid(row=j + 1, column=0, columnspan=5, padx=1, pady=0.5)
+
+        Button(self.frame_3rd, text='Вернутся на главную страницу', command=return_to_main).grid(row=j + 2, column=0,
+                                                                                                 columnspan=2)
+        Button(self.frame_3rd, text='Подтвердить', command=accept).grid(row=j + 2, column=2,
+                                                                                                 columnspan=2)
 
     def mainloop(self):
 
