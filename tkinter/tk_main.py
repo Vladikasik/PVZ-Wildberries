@@ -86,32 +86,44 @@ class Wildberries_App:
     def set_up_2(self):
 
         text_lb = 'Заказ ' + str(self.order['Order_num'])
-        Label(self.frame_2nd,text=text_lb,font='Calibri 14 bold').grid(row=0,column=1,columnspan=2,padx=1,pady=0.5)
+        Label(self.frame_2nd,text=text_lb,font='Calibri 14 bold').grid(row=0,column=2,columnspan=2,padx=1,pady=0.5)
+
+        text_lb = '____________________'
+        Label(self.frame_2nd, text=text_lb, font='Calibri 14 bold').grid(row=1, column=2, columnspan=2, padx=1,
+                                                                         pady=0.5)
 
         text_lb = 'Вещи'
-        Label(self.frame_2nd, text=text_lb,font='Calibri 13').grid(row=1, column=0, columnspan=2, padx=1, pady=0.5)
+        Label(self.frame_2nd, text=text_lb,font='Calibri 13').grid(row=2, column=0, columnspan=2, padx=1, pady=0.5)
 
         text_lb = 'Информация'
-        Label(self.frame_2nd, text=text_lb,font='Calibri 13').grid(row=1, column=2, columnspan=2, padx=1, pady=0.5)
+        Label(self.frame_2nd, text=text_lb,font='Calibri 13').grid(row=2, column=3, columnspan=2, padx=1, pady=0.5)
 
         j=0
         for i in self.order['Вещи']:
-            Label(self.frame_2nd,text=str(i)).grid(row=2+j,column=0,padx=0.5,pady=0.5)
+            Label(self.frame_2nd,text=str(i)).grid(row=3+j,column=0,padx=0.5,pady=0.5)
             j+=1
 
         j = 0
         for i in self.order_clothes:
-            Label(self.frame_2nd, text=i).grid(row=2 + j, column=1, padx=1, pady=0.5)
-            j += 1
-
-        j = 0
-        for i in self.data_info:
-            Label(self.frame_2nd, text=i).grid(row=2 + j, column=3, padx=0.5, pady=0.5)
+            Label(self.frame_2nd, text=i).grid(row=3 + j, column=1, padx=1, pady=0.5)
             j += 1
 
         j = 0
         for i in self.data_info_text:
-            Label(self.frame_2nd, text=i).grid(row=2 + j, column=2, padx=100, pady=0.5)
+            Label(self.frame_2nd, text='|').grid(row=3 + j, column=2, padx=10, pady=0.5)
+            j += 1
+
+        j = 0
+        for i in self.data_info:
+            if j == 0:
+                Label(self.frame_2nd, text=i).grid(row=3 + j, column=4,columnspan=2, padx=0.5, pady=0.5)
+            else:
+                Label(self.frame_2nd, text=i).grid(row=3 + j, column=4, padx=0.5, pady=0.5)
+            j += 1
+
+        j = 0
+        for i in self.data_info_text:
+            Label(self.frame_2nd, text=i).grid(row=3 + j, column=3, padx=10, pady=0.5)
             j += 1
         print(self.order_clothes)
 
