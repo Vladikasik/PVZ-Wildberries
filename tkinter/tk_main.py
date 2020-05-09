@@ -52,10 +52,13 @@ class Wildberries_App:
             print(ex)
 
         self.data_from_file = json.loads(self.data_from_file)
+        try:
+            for order in self.data_from_file:
+                if order['Order_num'] == int(self.order_number_from_field):
+                    self.order = order
+        except ValueError:
+                messagebox.showerror('Ошибка', 'Неправильный код заказа')
 
-        for order in self.data_from_file:
-            if order['Order_num'] == int(self.order_number_from_field):
-                self.order = order
         ###each clothes
         self.order_clothes = []
 
