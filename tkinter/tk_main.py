@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+import json
 
 class Wildberries_App:
 
@@ -11,6 +12,10 @@ class Wildberries_App:
         self.root.title('Wildberries')
         self.root.geometry('1000x750')
         #
+
+        self.data_from_file = None
+        self.order_number_from_field = ''
+        self.order = {}
 
     def set_up_1(self):
 
@@ -28,8 +33,24 @@ class Wildberries_App:
 
     def get_order(self):
 
-        self.order_number = self.order_number.get('1.0', END)
-        print(self.order_number)
+        self.order_number_from_field = self.order_number.get('1.0', END)
+
+        try:
+            file = open(r'..\files\orders.json',encoding='utf-8')
+            self.data_from_file = file.read()
+            file.close()
+        except Exception as ex:
+            print('Error with opening file')
+            print('---')
+            print(ex)
+
+        self.data_from_file = json.loads(self.data_from_file)
+
+        for order in self.data_from_file:
+            if order['Order_num'] == int(self.order_number_from_field):
+                self.order = order
+
+    def replace(self,field1,field2):
 
     def mainloop(self):
 
