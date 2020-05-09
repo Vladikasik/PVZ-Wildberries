@@ -22,6 +22,8 @@ class Wildberries_App:
 
         self.frame_2nd = Frame(self.root)
 
+        self.frame_3rd = Frame(self.root)
+
         self.choose_list = {}
 
     def set_up_1(self):
@@ -149,16 +151,30 @@ class Wildberries_App:
         bttn_give.grid(row=j+4,column=1,pady=50)
         bttn_get.grid(row=j+4,column=4,pady=50)
 
+    def check_chosen(self):
+        print('chooselist')
+        print(self.choose_list)
+        is_true = False
+        for item, variable in self.choose_list.items():
+            if variable.get():
+                is_true = True
+
+        if is_true:
+            return True
+        else:
+            messagebox.showerror('Ошибка', 'Вы не выбрали не одну вещь')
+            return False
+
     def button_give(self):
+        while True:
+            if self.check_chosen():
+                break
+        self.check_available('return')
 
-        for item, varibale in self.choose_list.items():
-            print(item,varibale.get())
-
-        self.check_available()
     def button_get(self):
-        self.check_available()
+        self.check_available('submission')
 
-    def check_available(self):
+    def check_available(self,state_func):
 
         window = Toplevel()
 
@@ -169,13 +185,14 @@ class Wildberries_App:
 
         password = Entry(window, show='*')
 
+
         def confirm():
             result = password.get()
             with open(r'..\files\private\password_rabotnika') as file:
                 correct = file.read()
             if result == correct:
-                self.set_up_3()
                 window.destroy()
+                go_next(state_func)
             else:
                 messagebox.showerror('Ошибка', 'Неправильный пароль')
                 window.lift()
@@ -186,9 +203,27 @@ class Wildberries_App:
         password.pack()
         bttn.pack()
 
-    def set_up_3(self):
+        def go_next(state):
+            self.frame_2nd.destroy()
+            self.set_up_3(state)
+            self.frame_3rd.pack()
 
-        pass
+    def set_up_3(self, state):
+
+        text_lb = 'Заказ ' + str(self.order['Order_num'])
+        Label(self.frame_3rd, text=text_lb, font='Calibri 14 bold').grid(row=0, column=2, columnspan=2, padx=1,
+                                                                         pady=0.5)
+
+        text_lb = '____________________'
+        Label(self.frame_3rd, text=text_lb, font='Calibri 14 bold').grid(row=1, column=2, columnspan=2, padx=1,
+                                                                         pady=0.5)
+
+        if state == 'return':
+            text_lb = 'Вещи на возврат'
+        elif state == 'submission':
+            text_lb = 'Вещи на сдачу'
+
+        Label(self.frame_3rd, text=text_lb, font='Calibri 13').grid(row=2, column=0, columnspan=2, padx=1, pady=0.5)
 
     def replace(self, field1, field2):
         field1.destroy()
