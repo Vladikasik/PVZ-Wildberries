@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import json
 from tkinter import messagebox
+from tkinter import BooleanVar
 
 
 class Wildberries_App:
@@ -21,7 +22,7 @@ class Wildberries_App:
 
         self.frame_2nd = Frame(self.root)
 
-        self.choose_list = []
+        self.choose_list = {}
 
     def set_up_1(self):
 
@@ -103,14 +104,15 @@ class Wildberries_App:
         text_lb = 'Информация'
         Label(self.frame_2nd, text=text_lb, font='Calibri 13').grid(row=2, column=3, columnspan=2, padx=1, pady=0.5)
 
-        for i in range(len(self.order)):
-            self.choose_list.append(False)
-
         print(self.choose_list)
+
+        for i in self.order['Вещи']:
+            self.choose_list[i] = BooleanVar()
 
         j = 0
         for i in self.order['Вещи']:
-            Checkbutton(self.frame_2nd, text=str(i)).grid(row=3 + j, column=0, padx=0.5, pady=0.5)
+
+            Checkbutton(self.frame_2nd, text=str(i), variable=self.choose_list[i], onvalue=True, offvalue=False).grid(row=3 + j, column=0, padx=0.5, pady=0.5)
             j += 1
 
         j = 0
@@ -145,6 +147,10 @@ class Wildberries_App:
         bttn_get.grid(row=j+4,column=4,pady=50)
 
     def button_give(self):
+
+        for item, varibale in self.choose_list.items():
+            print(item,varibale.get())
+
         self.check_available()
     def button_get(self):
         self.check_available()

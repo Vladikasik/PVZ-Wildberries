@@ -1,31 +1,12 @@
-from tkinter import *
-from tkinter import ttk
+import tkinter as tk
+my_w = tk.Tk()
+my_w.geometry("500x500")
 
+def my_upd():
+    print('Check box value :',c1_v1.get())
 
-def show_hide_psd():
-    if(check_var.get()):
-        entry_psw.config(show="")
-    else:
-        entry_psw.config(show="*")
+c1_v1=tk.BooleanVar()
+c1 = tk.Checkbutton(my_w, text='PHP', variable=c1_v1,onvalue=True,offvalue=False,command=my_upd)
+c1.grid(row=2,column=2)
 
-    print(entry_psw.get())
-
-
-window = Tk()
-window.wm_title("Password")
-
-window.geometry("300x100+30+30")
-window.resizable(0,0)
-
-entry_psw = Entry(window, width=30, show="*", bd=3)
-entry_psw.place(x = 5, y = 25)
-
-
-
-check_var = IntVar()
-check_show_psw = Checkbutton(window, text = "Show", variable = check_var, \
-                 onvalue = 1, offvalue = 0, height=2, \
-                 width = 5, command = show_hide_psd)
-check_show_psw.place(x = 5, y = 50)
-
-window.mainloop()
+my_w.mainloop()
