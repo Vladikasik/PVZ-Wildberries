@@ -182,7 +182,7 @@ try:
                                         # ---------------- #
                                         else:
                                             # ---------------- #
-                                            connection.send(bytes("CODE 501: YOU CAN'T RETURN SOME OF TIMES."))
+                                            connection.send(bytes("CODE 501: YOU CAN'T RETURN SOME OF ITEMS."))
                                             # ---------------- #
                                             break
                                     # ---------------- #
