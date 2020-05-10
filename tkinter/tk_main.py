@@ -38,6 +38,8 @@ class Wildberries_App:
         #id of thing and its name
         self.num_item_dict = {}
 
+        self.selected_minimal_1 = False
+
     def set_up_1(self):
 
         self.frame_1ts = Frame(self.root)
@@ -76,12 +78,14 @@ class Wildberries_App:
 
         sending = Server_connect.Server(self.order_number_from_field, 'order')
         receive = sending.run()
+        if receive == 'ERROR 404: ORDER ID NOT FOUND.' or receive == 'CODE 501 : NOT IMPLEMENTED.':
+            messagebox.showerror('Ошибка', receive)
 
         json_data = '"' + receive + '"'
         json_data = json_data.replace("'", '"')[1:-1]
         json_data = json_data.replace('F','f')
-        print(json_data)
         self.order = json.loads(json_data)
+        print(self.order)
 
         # each clothes (id into name)
         # self.order_clothes = []
@@ -105,7 +109,12 @@ class Wildberries_App:
             self.list_nums_items.append(i)
 
         for i in self.order["OrderItemsInfo"].values():
-            self.list_names_items.append(i["ItemInfo"])
+            print(i)
+            print(type(i))
+            if i == 'ERROR 404: ITEM NOT fOUND.':
+                self.list_names_items.append(i)
+            else:
+                self.list_names_items.append(i["ItemInfo"])
         ####
 
         ####info
@@ -187,18 +196,20 @@ class Wildberries_App:
                 is_true = True
 
         if is_true:
+            self.selected_minimal_1 = True
             return True
         else:
-            messagebox.showerror('Ошибка', 'Вы не выбрали не одну вещь')
+            # messagebox.showerror('Ошибка', 'Вы не выбрали не одну вещь')
+            self.selected_minimal_1 = False
             return False
 
     def button_give(self):
         if self.check_chosen():
-            self.check_available('return')
+            self.check_available('UpdateReturn')
 
     def button_get(self):
         if self.check_chosen():
-            self.check_available('submission')
+            self.check_available('UpdateSubmission')
 
     def check_available(self, state_func):
 
@@ -273,18 +284,23 @@ class Wildberries_App:
             self.frame_2nd.pack()
 
         def accept(request_type):
-            order_copy = self.order
+
+            selected_list =[]
 
             for item, state in self.choose_list.items():
-                order_copy["OrderItems"][item] = state.get()
+                if state.get():
+                    selected_list.append(item)
+            date_to_send = str(selected_list) + '!!' + str(self.order["OrderId"])
+            connection = Server_connect.Server(date_to_send,request_type)
 
-            print(order_copy)
+            answer = connection.run()
+
 
         Label(self.frame_3rd, text='', font='Calibri 13').grid(row=j + 1, column=0, columnspan=5, padx=1, pady=0.5)
 
         Button(self.frame_3rd, text='Вернутся на главную страницу', command=return_to_main).grid(row=j + 2, column=0,
                                                                                                  columnspan=2)
-        Button(self.frame_3rd, text='Подтвердить', command=accept).grid(row=j + 2, column=2,
+        Button(self.frame_3rd, text='Подтвердить', command=lambda: accept(state)).grid(row=j + 2, column=2,
                                                                                                  columnspan=2)
 
     def mainloop(self):

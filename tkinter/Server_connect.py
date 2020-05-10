@@ -11,12 +11,18 @@ class Server:
         self.buffer_size = 0
 
     def main(self):
-        data_to_send = '["GetOrderInfo", {"OrderId": 0}]'
 
+        if self.request_type == 'order':
+            data_to_send = '["GetOrderInfo", {"OrderId": %s}]' % self.request_data
+        elif self.request_type == 'UpdateReturn' or 'UpdateSubmission':
+            request_data = self.request_data.split('!!')
+
+            data_to_send = '["%s", {"OrderId": %s, "OrderItems": %s}]' % (self.request_type, request_data[1], request_data[0])
+            data_to_send = data_to_send.replace("'",'"')
+        print(data_to_send)
         len_stroke = len(data_to_send)
 
         self.sock1.send(bytes(str(len_stroke), encoding='utf-8'))
-
 
         self.sock1.send(bytes(data_to_send, encoding='utf-8'))
 
