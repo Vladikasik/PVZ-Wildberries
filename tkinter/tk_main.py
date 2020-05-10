@@ -5,6 +5,7 @@ from tkinter import messagebox
 from tkinter import BooleanVar
 import Server_connect
 
+
 class Wildberries_App:
 
     def __init__(self):
@@ -35,7 +36,7 @@ class Wildberries_App:
         self.list_nums_items = []
         self.list_names_items = []
 
-        #id of thing and its name
+        # id of thing and its name
         self.num_item_dict = {}
 
         self.selected_minimal_1 = False
@@ -83,7 +84,7 @@ class Wildberries_App:
 
         json_data = '"' + receive + '"'
         json_data = json_data.replace("'", '"')[1:-1]
-        json_data = json_data.replace('F','f')
+        json_data = json_data.replace('F', 'f')
         self.order = json.loads(json_data)
         print(self.order)
 
@@ -182,7 +183,6 @@ class Wildberries_App:
             Label(self.frame_2nd, text=i).grid(row=3 + j, column=3, padx=10, pady=0.5)
             j += 1
 
-
         bttn_give = Button(self.frame_2nd, text='Осуществить возврат', font='Calibri 13', command=self.button_give)
         bttn_get = Button(self.frame_2nd, text='Выдать заказ', font='Calibri 13', command=self.button_get)
 
@@ -256,25 +256,26 @@ class Wildberries_App:
         Label(self.frame_3rd, text=text_lb, font='Calibri 14 bold').grid(row=1, column=2, columnspan=2, padx=1,
                                                                          pady=0.5)
 
-        if state == 'return':
+        if state == 'UpdateReturn':
             text_lb = 'Вещи на возврат'
-        elif state == 'submission':
+        elif state == 'UpdateSubmission':
             text_lb = 'Вещи на сдачу'
 
         Label(self.frame_3rd, text=text_lb, font='Calibri 13').grid(row=2, column=0, columnspan=2, padx=1, pady=0.5)
 
         print(self.choose_list)
 
-        j = 2
+        Label(self.frame_3rd, text='ID товара').grid(row=2, column=2, columnspan=2, padx=0.5, pady=0.5)
+        Label(self.frame_3rd, text='Наименование товара').grid(row=2, column=4, columnspan=2, padx=0.5, pady=0.5)
+
+        j = 3
         for item, state_item in self.choose_list.items():
             if state_item.get():
                 Label(self.frame_3rd, text=item).grid(row=j, column=2, columnspan=2, padx=0.5, pady=0.5)
                 item_id = self.list_nums_items.index(item)
                 Label(self.frame_3rd, text=self.list_names_items[item_id]).grid(row=j, column=4, columnspan=2, padx=0.5,
-                                                                         pady=0.5)
+                                                                                pady=0.5)
                 j += 1
-
-
 
         def return_to_main():
             self.frame_3rd.destroy()
@@ -285,23 +286,22 @@ class Wildberries_App:
 
         def accept(request_type):
 
-            selected_list =[]
+            selected_list = []
 
             for item, state in self.choose_list.items():
                 if state.get():
                     selected_list.append(item)
             date_to_send = str(selected_list) + '!!' + str(self.order["OrderId"])
-            connection = Server_connect.Server(date_to_send,request_type)
+            connection = Server_connect.Server(date_to_send, request_type)
 
             answer = connection.run()
-
 
         Label(self.frame_3rd, text='', font='Calibri 13').grid(row=j + 1, column=0, columnspan=5, padx=1, pady=0.5)
 
         Button(self.frame_3rd, text='Вернутся на главную страницу', command=return_to_main).grid(row=j + 2, column=0,
                                                                                                  columnspan=2)
         Button(self.frame_3rd, text='Подтвердить', command=lambda: accept(state)).grid(row=j + 2, column=2,
-                                                                                                 columnspan=2)
+                                                                                       columnspan=2)
 
     def mainloop(self):
 

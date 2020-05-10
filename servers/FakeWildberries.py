@@ -1,5 +1,4 @@
 import socket
-<<<<<<< HEAD
 import json
 
 class FakeServer:
@@ -49,12 +48,15 @@ class FakeServer:
 
     def update_data(self):
 
-        pass
+        receive_data = self.connection.recv(self.bufer_size).decode('utf-8')
+
+        json_obj = kson.loads(receive_data)
+
+        with open('main.json','w') as file:
+            file.write(json_obj)
+
+              
 
     def get_items(self):
 
-        pass
-
-=======
->>>>>>> master
-
+        self.
