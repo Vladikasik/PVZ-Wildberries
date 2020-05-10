@@ -139,14 +139,22 @@ try:
                                         if j in i["OrderItems"].keys() and i["OrderItems"][j] == "delivered":
                                             # ---------------- #
                                             i["OrderItems"][j] = "submitted"
-                                    # ---------------- #
-                                    if JsonFilesWriter("OrdersDatabaseFile.json", OrdersDatabaseObject) == True:
                                         # ---------------- #
-                                        connection.send(bytes("CODE 200: OK.", encoding="utf-8"))
+                                        else:
+                                            # ---------------- #
+                                            connection.send(bytes("CODE 501: YOU CAN'T SUBMIT SOME OF ITEMS."))
+                                            # ---------------- #
+                                            break
                                     # ---------------- #
                                     else:
                                         # ---------------- #
-                                        connection.send(bytes("CODE 501 : NOT IMPLEMENTED.", encoding="utf-8"))
+                                        if JsonFilesWriter("OrdersDatabaseFile.json", OrdersDatabaseObject) == True:
+                                            # ---------------- #
+                                            connection.send(bytes("CODE 200: OK.", encoding="utf-8"))
+                                        # ---------------- #
+                                        else:
+                                            # ---------------- #
+                                            connection.send(bytes("CODE 501 : NOT IMPLEMENTED.", encoding="utf-8"))
                                 # ---------------- #
                                 except Exception as exception:
                                     # ---------------- #
