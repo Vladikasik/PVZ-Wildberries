@@ -6,7 +6,7 @@ class FakeServer:
     def __init__(self):
 
         self.socket = socket.socket()
-        self.socket.bind(('194.67.78.210', 7777))
+        self.socket.bind(('194.67.92.182', 7777))
         self.socket.listen(1)
         self.connection = None
         self.address = None
