@@ -1,12 +1,5 @@
-import tkinter as tk
-my_w = tk.Tk()
-my_w.geometry("500x500")
+import socket
 
-def my_upd():
-    print('Check box value :',c1_v1.get())
-
-c1_v1=tk.BooleanVar()
-c1 = tk.Checkbutton(my_w, text='PHP', variable=c1_v1,onvalue=True,offvalue=False,command=my_upd)
-c1.grid(row=2,column=2)
-
-my_w.mainloop()
+sock = socket.socket()
+sock.connect(("194.67.78.210", 1024))
+sock.send(bytes('["GetOrderInfo", [{"OrderId": 0}]]', encoding="utf-8"))

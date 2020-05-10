@@ -3,7 +3,7 @@ from tkinter import ttk
 import json
 from tkinter import messagebox
 from tkinter import BooleanVar
-
+import Server_connect
 
 class Wildberries_App:
 
@@ -28,6 +28,16 @@ class Wildberries_App:
 
         self.choose_list = {}
 
+        self.data_info = []
+
+        self.data_info_text = []
+
+        self.list_nums_items = []
+        self.list_names_items = []
+
+        #id of thing and its name
+        self.num_item_dict = {}
+
     def set_up_1(self):
 
         self.frame_1ts = Frame(self.root)
@@ -46,49 +56,64 @@ class Wildberries_App:
 
         self.order_number_from_field = self.order_number.get()
 
-        try:
-            file = open(r'..\files\orders.json', encoding='utf-8')
-            self.data_from_file = file.read()
-            file.close()
-        except Exception as ex:
-            print('Error with opening file')
-            print('---')
-            print(ex)
+        # receive order
+        # try:
+        #     file = open(r'..\files\orders.json', encoding='utf-8')
+        #     self.data_from_file = file.read()
+        #     file.close()
+        # except Exception as ex:
+        #     print('Error with opening file')
+        #     print('---')
+        #     print(ex)
+        #
+        # self.data_from_file = json.loads(self.data_from_file)
+        # try:
+        #     for order in self.data_from_file:
+        #         if order['Order_num'] == int(self.order_number_from_field):
+        #             self.order = order
+        # except ValueError:
+        #     messagebox.showerror('Ошибка', 'Неправильный код заказа')
 
-        self.data_from_file = json.loads(self.data_from_file)
-        try:
-            for order in self.data_from_file:
-                if order['Order_num'] == int(self.order_number_from_field):
-                    self.order = order
-        except ValueError:
-            messagebox.showerror('Ошибка', 'Неправильный код заказа')
+        sending = Server_connect.Server(self.order_number_from_field, 'order')
+        receive = sending.run()
 
-        ###each clothes
-        self.order_clothes = []
+        json_data = '"' + receive + '"'
+        json_data = json_data.replace("'", '"')[1:-1]
+        json_data = json_data.replace('F','f')
+        print(json_data)
+        self.order = json.loads(json_data)
 
-        numbers = self.order['Вещи']
+        # each clothes (id into name)
+        # self.order_clothes = []
+        #
+        # numbers = self.order['Вещи']
+        #
+        # try:
+        #     file = open(r'..\files\clothes.json', encoding='utf-8')
+        #     file_read = file.read()
+        #     file.close()
+        # except Exception as ex:
+        #     print(ex)
+        #
+        # self.data_clothes = json.loads(file_read)
+        #
+        # for item in self.data_clothes:
+        #     for number in numbers:
+        #         if item == number:
+        #             self.order_clothes.append(self.data_clothes[item])
+        for i in self.order["OrderItemsInfo"].keys():
+            self.list_nums_items.append(i)
 
-        try:
-            file = open(r'..\files\clothes.json', encoding='utf-8')
-            file_read = file.read()
-            file.close()
-        except Exception as ex:
-            print(ex)
-
-        self.data_clothes = json.loads(file_read)
-
-        for item in self.data_clothes:
-            for number in numbers:
-                if item == number:
-                    self.order_clothes.append(self.data_clothes[item])
+        for i in self.order["OrderItemsInfo"].values():
+            self.list_names_items.append(i["ItemInfo"])
         ####
 
         ####info
-        self.fio = self.order['ФИО']
-        self.last_4 = self.order['Last_4']
-        self.phone = self.order['Телефон']
+        fio = self.order['ClientfullName']
+        last_4 = self.order['OrderVerificationCode']
+        phone = self.order['ClientPhone']
 
-        self.data_info = [self.fio, self.last_4, self.phone]
+        self.data_info = [fio, last_4, phone]
         self.data_info_text = ['ФИО', 'Последние 4', 'Телефон']
         ####
         self.frame_1ts.destroy()
@@ -96,12 +121,12 @@ class Wildberries_App:
         self.frame_2nd.pack()
 
     def init_choose_list(self):
-        for i in self.order['Вещи']:
+        for i in self.list_nums_items:
             self.choose_list[i] = BooleanVar()
 
     def set_up_2(self):
 
-        text_lb = 'Заказ ' + str(self.order['Order_num'])
+        text_lb = 'Заказ ' + str(self.order['OrderId'])
         Label(self.frame_2nd, text=text_lb, font='Calibri 14 bold').grid(row=0, column=2, columnspan=2, padx=1,
                                                                          pady=0.5)
 
@@ -120,13 +145,13 @@ class Wildberries_App:
         self.init_choose_list()
 
         j = 0
-        for i in self.order['Вещи']:
+        for i in self.list_nums_items:
             Checkbutton(self.frame_2nd, text=str(i), variable=self.choose_list[i], onvalue=True, offvalue=False).grid(
                 row=3 + j, column=0, padx=0.5, pady=0.5)
             j += 1
 
         j = 0
-        for i in self.order_clothes:
+        for i in self.list_names_items:
             Label(self.frame_2nd, text=i).grid(row=3 + j, column=1, padx=1, pady=0.5)
             j += 1
 
@@ -148,7 +173,6 @@ class Wildberries_App:
             Label(self.frame_2nd, text=i).grid(row=3 + j, column=3, padx=10, pady=0.5)
             j += 1
 
-        print(self.order_clothes)
 
         bttn_give = Button(self.frame_2nd, text='Осуществить возврат', font='Calibri 13', command=self.button_give)
         bttn_get = Button(self.frame_2nd, text='Выдать заказ', font='Calibri 13', command=self.button_get)
@@ -173,7 +197,8 @@ class Wildberries_App:
             self.check_available('return')
 
     def button_get(self):
-        self.check_available('submission')
+        if self.check_chosen():
+            self.check_available('submission')
 
     def check_available(self, state_func):
 
@@ -212,7 +237,7 @@ class Wildberries_App:
 
         self.frame_3rd = Frame(self.root)
 
-        text_lb = 'Заказ ' + str(self.order['Order_num'])
+        text_lb = 'Заказ ' + str(self.order['OrderId'])
         Label(self.frame_3rd, text=text_lb, font='Calibri 14 bold').grid(row=0, column=2, columnspan=2, padx=1,
                                                                          pady=0.5)
 
@@ -233,9 +258,12 @@ class Wildberries_App:
         for item, state_item in self.choose_list.items():
             if state_item.get():
                 Label(self.frame_3rd, text=item).grid(row=j, column=2, columnspan=2, padx=0.5, pady=0.5)
-                Label(self.frame_3rd, text=self.data_clothes[item]).grid(row=j, column=4, columnspan=2, padx=0.5,
+                item_id = self.list_nums_items.index(item)
+                Label(self.frame_3rd, text=self.list_names_items[item_id]).grid(row=j, column=4, columnspan=2, padx=0.5,
                                                                          pady=0.5)
                 j += 1
+
+
 
         def return_to_main():
             self.frame_3rd.destroy()
@@ -244,8 +272,13 @@ class Wildberries_App:
             self.set_up_2()
             self.frame_2nd.pack()
 
-        def accept():
-            pass
+        def accept(request_type):
+            order_copy = self.order
+
+            for item, state in self.choose_list.items():
+                order_copy["OrderItems"][item] = state.get()
+
+            print(order_copy)
 
         Label(self.frame_3rd, text='', font='Calibri 13').grid(row=j + 1, column=0, columnspan=5, padx=1, pady=0.5)
 
