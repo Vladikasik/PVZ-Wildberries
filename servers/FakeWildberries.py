@@ -71,3 +71,7 @@ class FakeServer:
 
     def get_items(self):
         pass
+
+if __name__ == '__main__':
+    a = FakeServer()
+    a.main()
