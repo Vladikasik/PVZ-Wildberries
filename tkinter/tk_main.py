@@ -256,16 +256,19 @@ class Wildberries_App:
         Label(self.frame_3rd, text=text_lb, font='Calibri 14 bold').grid(row=1, column=2, columnspan=2, padx=1,
                                                                          pady=0.5)
 
-        if state == 'return':
+        if state == 'UpdateReturn':
             text_lb = 'Вещи на возврат'
-        elif state == 'submission':
+        elif state == 'UpdateSubmission':
             text_lb = 'Вещи на сдачу'
 
         Label(self.frame_3rd, text=text_lb, font='Calibri 13').grid(row=2, column=0, columnspan=2, padx=1, pady=0.5)
 
         print(self.choose_list)
 
-        j = 2
+        Label(self.frame_3rd, text='ID товара').grid(row=2, column=2, columnspan=2, padx=0.5, pady=0.5)
+        Label(self.frame_3rd, text='Наименование товара').grid(row=2, column=4, columnspan=2, padx=0.5, pady=0.5)
+
+        j = 3
         for item, state_item in self.choose_list.items():
             if state_item.get():
                 Label(self.frame_3rd, text=item).grid(row=j, column=2, columnspan=2, padx=0.5, pady=0.5)
