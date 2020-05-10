@@ -1,0 +1,30 @@
+[
+    {
+        "OrderId": 0,
+        "OrderDeadline": "",
+        "OrderSynchronaizedWithMainServer": "delivered",
+        "OrderVerificationCode": "",
+        "ClientFullName": "",
+        "ClientPhone": "",
+        "OrderItems": {
+            "#0": "delivered",
+            "#1": "delivered",
+            "#2": "delivered",
+            "#3": "delivered"
+        }
+    },
+    {
+        "OrderId": 1,
+        "OrderDeadline": "",
+        "OrderSynchronaizedWithMainServer": "delivered",
+        "OrderVerificationCode": "",
+        "ClientFullName": "",
+        "ClientPhone": "",
+        "OrderItems": {
+            "#0": "submitted",
+            "#1": "submitted",
+            "#4": "delivered",
+            "#5": "delivered"
+        }
+    }
+]

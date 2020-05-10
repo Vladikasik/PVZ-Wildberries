@@ -1,0 +1,20 @@
+[
+    {
+        "#0": {
+            "ItemInfo": "APPLE IPHONE 11 PRO MAX",
+            "ItemPrice": 0
+        },
+        "#1": {
+            "ItemInfo": "APPLE MACBOOK PRO 15",
+            "ItemPrice": 1
+        },
+        "#2": {
+            "ItemInfo": "APPLE WATCH SIRIECE 5",
+            "ItemPrice": 2
+        },
+        "#3": {
+            "ItemInfo": "APPLE AIRPODS PRO",
+            "ItemPrice": 3
+        }
+    }
+]
