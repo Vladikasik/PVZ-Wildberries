@@ -11,6 +11,7 @@ class FakeServer:
         self.connection = None
         self.address = None
         self.bufer_size = 0
+        self.json_data = 0
 
     def main(self):
 
@@ -18,11 +19,14 @@ class FakeServer:
             while 1 == 1:
                     self.connection, self.address = self.socket.accept()
 
-                    request_data = self.connection.recv(8).decode('utf-8')
+                    self.bufer_size = self.connection.recv(8).decode('utf-8')
 
-                    request_data = request_data.split('!!')
+                    data_recieve = self.connection.recv(int(self.bufer_size)).decode('utf-8')
 
-                    self.bufer_size = request_data[0]
+                    data_recieve = data_recieve.split('!!')
+                    request_data = data_recieve[0]
+                    self.json_data = data_recieve[1]
+
 
                     if request_data[1] == 'orders':
                         self.get_data()
@@ -48,12 +52,15 @@ class FakeServer:
 
     def update_data(self):
 
-        receive_data = self.connection.recv(self.bufer_size).decode('utf-8')
+        try:
+            json_obj = kson.loads(self.json_data)
 
-        json_obj = kson.loads(receive_data)
+            with open('main.json', 'w') as file:
+                file.write(json_obj)
 
-        with open('main.json','w') as file:
-            file.write(json_obj)
+            self.connection.send(b'Successful')
+        except Exception as ex:
+            print(ex)
 
               
 
