@@ -6,7 +6,7 @@ class FakeServer:
     def __init__(self):
 
         self.socket = socket.socket()
-        self.socket.bind(('194.67.92.182', 7777))
+        self.socket.bind(('194.67.78.210', 2048))
         self.socket.listen(1)
         self.connection = None
         self.address = None
@@ -53,10 +53,15 @@ class FakeServer:
     def update_data(self):
 
         try:
+            with open('main.json','r') as file:
+                data = json.load(file)
+
             json_obj = kson.loads(self.json_data)
 
+            data.append(json_obj)
+
             with open('main.json', 'w') as file:
-                file.write(json_obj)
+                file.write(data)
 
             self.connection.send(b'Successful')
         except Exception as ex:
@@ -65,5 +70,4 @@ class FakeServer:
               
 
     def get_items(self):
-
-        self.
+        pass
