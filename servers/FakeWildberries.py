@@ -28,11 +28,11 @@ class FakeServer:
                     self.json_data = data_recieve[1]
 
 
-                    if request_data[1] == 'orders':
+                    if request_data == 'orders':
                         self.get_data()
-                    elif request_data[1] == 'items':
+                    elif request_data == 'items':
                         self.get_items()
-                    elif request_data[1] == 'update':
+                    elif request_data == 'update':
                         self.update_data()
 
         except Exception as ex:
@@ -71,3 +71,7 @@ class FakeServer:
 
     def get_items(self):
         pass
+
+if __name__ == '__main__':
+    a = FakeServer()
+    a.main()
