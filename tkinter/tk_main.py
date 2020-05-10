@@ -86,7 +86,6 @@ class Wildberries_App:
         json_data = json_data.replace("'", '"')[1:-1]
         json_data = json_data.replace('F', 'f')
         self.order = json.loads(json_data)
-        print(self.order)
 
         # each clothes (id into name)
         # self.order_clothes = []
@@ -110,8 +109,6 @@ class Wildberries_App:
             self.list_nums_items.append(i)
 
         for i in self.order["OrderItemsInfo"].values():
-            print(i)
-            print(type(i))
             if i == 'ERROR 404: ITEM NOT fOUND.':
                 self.list_names_items.append(i)
             else:
@@ -149,8 +146,6 @@ class Wildberries_App:
 
         text_lb = 'Информация'
         Label(self.frame_2nd, text=text_lb, font='Calibri 13').grid(row=2, column=3, columnspan=2, padx=1, pady=0.5)
-
-        print(self.choose_list)
 
         self.init_choose_list()
 
@@ -269,8 +264,6 @@ class Wildberries_App:
             text_lb = 'Вещи на сдачу'
 
         Label(self.frame_3rd, text=text_lb, font='Calibri 13').grid(row=2, column=0, columnspan=2, padx=1, pady=0.5)
-
-        print(self.choose_list)
 
         Label(self.frame_3rd, text='ID товара').grid(row=2, column=2, columnspan=2, padx=0.5, pady=0.5)
         Label(self.frame_3rd, text='Наименование товара').grid(row=2, column=4, columnspan=2, padx=0.5, pady=0.5)
