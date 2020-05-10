@@ -183,6 +183,13 @@ class Wildberries_App:
             Label(self.frame_2nd, text=i).grid(row=3 + j, column=3, padx=10, pady=0.5)
             j += 1
 
+        def change_to_1st():
+            self.frame_2nd.destroy()
+            self.set_up_1()
+
+        bttn_back = Button(self.frame_2nd, text='Вернутся на страницу выбора заказа', font='Calibri 13', command=change_to_1st)
+        bttn_back.grid(row=j+5,column=2, columnspan=2)
+
         bttn_give = Button(self.frame_2nd, text='Осуществить возврат', font='Calibri 13', command=self.button_give)
         bttn_get = Button(self.frame_2nd, text='Выдать заказ', font='Calibri 13', command=self.button_get)
 
