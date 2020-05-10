@@ -1,4 +1,5 @@
 import socket
+<<<<<<< HEAD
 import json
 
 class FakeServer:
@@ -54,4 +55,6 @@ class FakeServer:
 
         pass
 
+=======
+>>>>>>> master
 
