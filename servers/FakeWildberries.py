@@ -65,5 +65,4 @@ class FakeServer:
               
 
     def get_items(self):
-
-        self.
+        pass
