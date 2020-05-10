@@ -21,9 +21,16 @@ class FakeServer:
 
                     self.bufer_size = self.connection.recv(8).decode('utf-8')
 
+                    if self.bufer_size.isdigit():
+                        pass
+                    else:
+                        self.connection.close()
+                        continue
+
                     data_recieve = self.connection.recv(int(self.bufer_size)).decode('utf-8')
 
-                    data_recieve = data_recieve.split('!!')
+                    data_recieve = json.loads(data_recieve)
+
                     request_data = data_recieve[0]
                     self.json_data = data_recieve[1]
 
@@ -56,9 +63,7 @@ class FakeServer:
             with open('main.json','r') as file:
                 data = json.load(file)
 
-            json_obj = kson.loads(self.json_data)
-
-            data.append(json_obj)
+            data.append(self.json_data)
 
             with open('main.json', 'w') as file:
                 file.write(data)
