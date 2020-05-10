@@ -1,11 +1,11 @@
 [
     {
-        "OrderId": 0,
+        "OrderId": 194627,
         "OrderDeadline": "",
         "OrderSynchronaizedWithMainServer": "delivered",
         "OrderVerificationCode": "",
-        "ClientFullName": "",
-        "ClientPhone": "",
+        "ClientFullName": "Айнштейн Владислав Максимович",
+        "ClientPhone": "9686894778",
         "OrderItems": {
             "#0": "delivered",
             "#1": "delivered",
@@ -14,17 +14,29 @@
         }
     },
     {
-        "OrderId": 1,
+        "OrderId": 283947,
         "OrderDeadline": "",
         "OrderSynchronaizedWithMainServer": "delivered",
         "OrderVerificationCode": "",
-        "ClientFullName": "",
-        "ClientPhone": "",
+        "ClientFullName": "Дроздов Семен Сергеевич",
+        "ClientPhone": "9128392323",
         "OrderItems": {
-            "#0": "submitted",
+            "#4": "submitted",
+            "#5": "submitted"
+        }
+    },
+    {
+        "OrderId": 475812,
+        "OrderDeadline": "",
+        "OrderSynchronaizedWithMainServer": "delivered",
+        "OrderVerificationCode": "",
+        "ClientFullName": "Компьютерный Магнат",
+        "ClientPhone": "9128392323",
+        "OrderItems": {
             "#1": "submitted",
-            "#4": "delivered",
-            "#5": "delivered"
+            "#7": "submitted",
+            "#6": "submitted"
         }
     }
+
 ]

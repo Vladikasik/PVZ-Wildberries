@@ -2,19 +2,35 @@
     {
         "#0": {
             "ItemInfo": "APPLE IPHONE 11 PRO MAX",
-            "ItemPrice": 0
+            "ItemPrice": 220000
         },
         "#1": {
             "ItemInfo": "APPLE MACBOOK PRO 15",
-            "ItemPrice": 1
+            "ItemPrice": 240000
         },
         "#2": {
             "ItemInfo": "APPLE WATCH SIRIECE 5",
-            "ItemPrice": 2
+            "ItemPrice": 27000
         },
         "#3": {
             "ItemInfo": "APPLE AIRPODS PRO",
-            "ItemPrice": 3
+            "ItemPrice": 21000
+        },
+        "#4": {
+            "ItemInfo": "Тапочег",
+            "ItemPrice": 1000
+        },
+        "#5": {
+            "ItemInfo": "СЛОТ В КАЗИНО",
+            "ItemPrice": 777
+        },
+        "#6": {
+            "ItemInfo": "СБОРНЫЙ ПК",
+            "ItemPrice": 140000
+        },
+        "#7": {
+            "ItemInfo": "APPLE IMAC PRO макс комп",
+            "ItemPrice": 6000000
         }
     }
 ]
