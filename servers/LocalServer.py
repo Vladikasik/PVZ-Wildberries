@@ -123,7 +123,7 @@ try:
                             connection.close()
                             # ---------------- #
                             continue
-                     # ---------------- #
+                    # ---------------- #
                     elif RequestType == "UpdateSubmission":
                         # ---------------- #
                         OrdersDatabaseObject = JsonFilesLoader("OrdersDatabaseFile.json")
@@ -147,6 +147,54 @@ try:
                                     else:
                                         # ---------------- #
                                         connection.send(bytes("CODE 501 : NOT IMPLEMENTED.", encoding="utf-8"))
+                                # ---------------- #
+                                except Exception as exception:
+                                    # ---------------- #
+                                    connection.send(bytes("CODE 501 : NOT IMPLEMENTED.", encoding="utf-8"))
+                                # ---------------- #
+                                break
+                        # ---------------- #
+                        else:
+                            # ---------------- #
+                            ErrorMessage = "CODE 404: NOT FOUND."
+                            connection.send(bytes(str(len(ErrorMessage)), encoding="utf-8"))
+                            connection.send(bytes(ErrorMessage, encoding="utf-8"))
+                            # ---------------- #
+                            connection.close()
+                            # ---------------- #
+                            continue
+                    # ---------------- #
+                    elif RequestType == "UpdateReturn":
+                        # ---------------- #
+                        OrdersDatabaseObject = JsonFilesLoader("OrdersDatabaseFile.json")
+                        # ---------------- #
+                        for i in OrdersDatabaseObject:
+                            # ---------------- #
+                            if i["OrderId"] == RequestData["OrderId"]:
+                                # ---------------- #
+                                try:
+                                    # ---------------- #
+                                    for j in RequestData["OrderItems"]:
+                                        # ---------------- #
+                                        if j in i["OrderItems"].keys() and i["OrderItems"][j] == "submitted":
+                                            # ---------------- #
+                                            i["OrderItems"][j] = "returned"
+                                        # ---------------- #
+                                        else:
+                                            # ---------------- #
+                                            connection.send(bytes("CODE 501: YOU CAN'T RETURN SOME OF TIMES."))
+                                            # ---------------- #
+                                            break
+                                    # ---------------- #
+                                    else:
+                                        # ---------------- #
+                                        if JsonFilesWriter("OrdersDatabaseFile.json", OrdersDatabaseObject) == True:
+                                            # ---------------- #
+                                            connection.send(bytes("CODE 200: OK.", encoding="utf-8"))
+                                        # ---------------- #
+                                        else:
+                                            # ---------------- #
+                                            connection.send(bytes("CODE 501 : NOT IMPLEMENTED.", encoding="utf-8"))
                                 # ---------------- #
                                 except Exception as exception:
                                     # ---------------- #
