@@ -32,7 +32,7 @@ class Server:
 
         print(self.buffer_size)
 
-        dataToRecieve = self.sock1.recv(int(self.buffer_size))
+        dataToRecieve = self.sock1.recv(int(self.buffer_size)+100)
 
         result = dataToRecieve.decode('utf-8')
         return result

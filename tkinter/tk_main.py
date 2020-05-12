@@ -81,7 +81,8 @@ class Wildberries_App:
         receive = sending.run()
         if receive == 'ERROR 404: ORDER ID NOT FOUND.' or receive == 'CODE 501 : NOT IMPLEMENTED.':
             messagebox.showerror('Ошибка', receive)
-
+        print(receive)
+        print(len(receive))
         json_data = '"' + receive + '"'
         json_data = json_data.replace("'", '"')[1:-1]
         json_data = json_data.replace('F', 'f')
